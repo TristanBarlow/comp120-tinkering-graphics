@@ -14,7 +14,7 @@ BLUE = (0, 0, 255)
 windowWidth = 800
 windowHeight = 600
 
-tileSize = 10
+tileSize = 40
 
 redTotal = 0
 greenTotal = 0
