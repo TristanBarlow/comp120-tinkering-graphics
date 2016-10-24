@@ -11,8 +11,8 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-windowWidth = 800
-windowHeight = 600
+windowWidth = 600
+windowHeight = 400
 
 tailLength = 200
 lumTotal = 0
@@ -65,7 +65,7 @@ while True:
                                    math.pow(currentGreen, 2) +
                                    math.pow(currentBlue, 2))
 
-            if luminosity > lumAverage:
+            if luminosity < lumAverage:
                 for i in range (0, tailLength):
                     if x - i > 0:
                         newRed =  currentRed - (currentRed * i / tailLength)
@@ -90,5 +90,3 @@ while True:
 
     print('checkpoint4')
 
-    while True:
-        doingSomethingToPassTheTime += 1
