@@ -10,10 +10,10 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-HEIGHT = 400
-WIDTH = 800
+HEIGHT = 900
+WIDTH = 900
 a=1
-
+b=452
 def reduce_colours(color_change):
     if color_change > 175 and color_change < 255:
         color_change = 215
@@ -28,7 +28,7 @@ def distance(red1, red2, green1, green2, blue1, blue2):
     return likness
 
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
-Picture = pygame.image.load("cool_cat.jpg")
+Picture = pygame.image.load("pic8.jpg")
 PictureTrans = pygame.transform.scale(Picture, (WIDTH,HEIGHT))
 window.blit(PictureTrans,(0,0))
 while True:
@@ -57,8 +57,8 @@ while True:
                 px_array[x:x+1,y:y+1] = (red_final, green_final, blue_final)
 #Inverts colours when 'q' is pressed.
     if keys[pygame.K_q]:
-        for y in xrange(0,HEIGHT):
-            for x in xrange(0,WIDTH):
+        for y in xrange(1,HEIGHT-1):
+            for x in xrange(1,WIDTH-1):
                 red = window.get_at((x, y)).r
                 green = window.get_at((x, y)).g
                 blue = window.get_at((x, y)).b
@@ -68,8 +68,8 @@ while True:
                 px_array[x,y] = (red_final, green_final, blue_final)
 #Night Vision when e is pressed
     if keys[pygame.K_e]:
-        for y in xrange(0,HEIGHT):
-            for x in xrange(0,WIDTH):
+        for y in xrange(1,HEIGHT-1):
+            for x in xrange(1,WIDTH-1):
                 red = window.get_at((x, y)).r
                 green = window.get_at((x, y)).g
                 blue = window.get_at((x, y)).b
@@ -79,20 +79,20 @@ while True:
                 px_array[x,y] = (red_final, green_final, blue_final)
 # Press r for verticle lines
     if keys[pygame.K_r]:
-        for y in xrange(0,HEIGHT):
-            for x in xrange(0,WIDTH):
+        for y in xrange(1,HEIGHT-1):
+            for x in xrange(1,WIDTH-1):
                 red = window.get_at((x, y)).r
                 green = window.get_at((x, y)).g
                 blue = window.get_at((x, y)).b
-                red1 = window.get_at((x+1, y)).r
-                green1 = window.get_at((x+1, y)).g
-                blue1 = window.get_at((x+1, y)).b
+                red1 = window.get_at((x, y+1)).r
+                green1 = window.get_at((x, y+1)).g
+                blue1 = window.get_at((x, y+1)).b
                 likeness = distance(red, red1, green, green1, blue, blue1)
-                pygame.draw.rect(window, (red1, green1, blue1), (x + 1 , y , 1 , likeness/2), 1)
+                pygame.draw.rect(window, (red1, green1, blue1), (x + 1 , y , 1 , likeness/10),)
 # Press t for horizontal lines
     if keys[pygame.K_t]:
-        for y in xrange(0, HEIGHT):
-            for x in xrange(0, WIDTH):
+        for y in xrange(1, HEIGHT-1):
+            for x in xrange(1, WIDTH-1):
                 red = window.get_at((x, y)).r
                 green = window.get_at((x, y)).g
                 blue = window.get_at((x, y)).b
@@ -100,10 +100,18 @@ while True:
                 green1 = window.get_at((x + 1, y)).g
                 blue1 = window.get_at((x + 1, y)).b
                 likeness = distance(red, red1, green, green1, blue, blue1)
-                pygame.draw.rect(window, (red1, green1, blue1), (x + 1, y, likeness/3, 1), 1)
-    #if keys[pygame.K_t]:
-
+                pygame.draw.rect(window, (red1, green1, blue1), (x + 1, y, likeness/3, 1), 1)#Uses the likeness value to determine the length of the rectangle
+    b = (HEIGHT+4)/2
+    if keys[pygame.K_y]:
+        for y in range(0,HEIGHT/2):
+            b -= 1
+            x = WIDTH/2
+            red = window.get_at((x, y)).r
+            green = window.get_at((x, y)).g
+            blue = window.get_at((x, y)).b
+            pygame.draw.circle(window,(red, green, blue),(WIDTH/2,HEIGHT/2),b ,1)
     del px_array
+
 #Blits original picture
     if keys[pygame.K_SPACE]:
         window.blit(PictureTrans, (0, 0))
