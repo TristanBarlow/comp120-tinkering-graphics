@@ -17,76 +17,82 @@ windowHeight = 400
 tailLength = 200
 lumTotal = 0
 lumCount = 0
-doingSomethingToPassTheTime = 0
+average_total = 0
+average_counter = 0
+first_pass_average = 0
 
 window = pygame.display.set_mode((windowWidth, windowHeight))
 picture = pygame.image.load('pic6.png')
 picture = pygame.transform.scale(picture, (windowWidth, windowHeight))
 
 window.blit(picture, (0, 0))
+run_once = True
 
 
 while True:
+    if run_once:
+        run_once = False
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
 
-    pxArray = pygame.PixelArray(picture)
+        pxArray = pygame.PixelArray(picture)
 
-    for x in range(0, windowWidth - 1):
-        for y in range(0, windowHeight - 1):
-            currentRed = window.get_at((x, y)).r
-            currentGreen = window.get_at((x, y)).g
-            currentBlue = window.get_at((x, y)).b
+        for x in range(0, windowWidth - 1):
+            for y in range(0, windowHeight - 1):
+                currentRed = window.get_at((x, y)).r
+                currentGreen = window.get_at((x, y)).g
+                currentBlue = window.get_at((x, y)).b
 
-            luminosity = math.sqrt(math.pow(currentRed, 2) +
-                                   math.pow(currentGreen, 2) +
-                                   math.pow(currentBlue, 2))
-            if luminosity != 0 or luminosity < 440:
-                lumTotal += luminosity
-                lumCount += 1
+                luminosity = math.sqrt(math.pow(currentRed, 2) +
+                                       math.pow(currentGreen, 2) +
+                                       math.pow(currentBlue, 2))
 
-    lumAverage = lumTotal / lumCount #(windowWidth * windowHeight)
-    print('checkpoint1')
-    print('average luminosity: ')
-    print lumAverage
-    print lumCount
+                if luminosity != 0 or luminosity < 440:
+                    lumTotal += luminosity
+                    lumCount += 1
 
-    for x in range(0, windowWidth - 1):
-        for y in range(0, windowHeight - 1):
-            currentRed = window.get_at((x, y)).r
-            currentGreen = window.get_at((x, y)).g
-            currentBlue = window.get_at((x, y)).b
-            currentAlpha = window.get_at((x, y)).a
+        lumAverage = lumTotal / lumCount
+        print('checkpoint1')
+        print('average luminosity: ')
+        print lumAverage
+        print lumCount
 
-            luminosity = math.sqrt(math.pow(currentRed, 2) +
-                                   math.pow(currentGreen, 2) +
-                                   math.pow(currentBlue, 2))
+        for x in range(0, windowWidth - 1):
+            for y in range(0, windowHeight - 1):
+                currentRed = window.get_at((x, y)).r
+                currentGreen = window.get_at((x, y)).g
+                currentBlue = window.get_at((x, y)).b
+                currentAlpha = window.get_at((x, y)).a
 
-            if luminosity < lumAverage:
-                for i in range (0, tailLength):
-                    if x - i > 0:
-                        newRed =  currentRed - (currentRed * i / tailLength)
-                        newGreen = currentGreen - (currentGreen * i / tailLength)
-                        newBlue = currentBlue - (currentBlue * i / tailLength)
+                luminosity = math.sqrt(math.pow(currentRed, 2) +
+                                       math.pow(currentGreen, 2) +
+                                       math.pow(currentBlue, 2))
 
-                        pxArray[x - i, y] = (newBlue, newGreen, newRed)
-            else:
-                pxArray[x, y] = BLACK
+                if luminosity > lumAverage:
+                    for i in range (0, tailLength):
+                        if x - i > 0:
+                            newRed =  currentRed - (currentRed * i / tailLength)
+                            newGreen = currentGreen - (currentGreen * i / tailLength)
+                            newBlue = currentBlue - (currentBlue * i / tailLength)
 
-    print ('checkpoint2')
+                            pxArray[x - i, y] = (newBlue, newGreen, newRed)
+                else:
+                    pxArray[x, y] = BLACK
 
-    pict = pxArray.make_surface()
+        print ('checkpoint2')
 
-    del pxArray
+        pict = pxArray.make_surface()
 
-    print('checkpoint3')
+        del pxArray
 
-    window.blit(pict, (0, 0))
+        print('checkpoint3')
 
-    pygame.display.update()
+        window.blit(pict, (0, 0))
 
-    print('checkpoint4')
+        pygame.display.update()
+
+        print('checkpoint4')
 
