@@ -1,6 +1,6 @@
 import pygame, sys, time, random, math
 from pygame.locals import *
-import 
+import
 
 pygame.init()
 pygame.mixer.init()
