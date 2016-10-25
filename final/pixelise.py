@@ -1,6 +1,7 @@
 import pygame, sys, time, random, math
 from pygame.locals import *
-import 
+
+#import TinkeringMain.py
 
 pygame.init()
 pygame.mixer.init()
@@ -16,6 +17,7 @@ window_width = 800
 window_height = 600
 
 tile_size = 20
+tile_spacing = 5
 run_once = True
 
 red_total = 0
@@ -28,7 +30,7 @@ colour_count = 0
 doingSomethingToPassTheTime = 0
 
 window = pygame.display.set_mode((window_width, window_height))
-picture = pygame.image.load('pic2.jpg')
+picture = pygame.image.load('cool_cat.jpg')
 picture = pygame.transform.scale(picture, (window_width, window_height))
 
 window.blit(picture, (0, 0))
@@ -59,12 +61,12 @@ while True:
                         green_total += current_green
                         blue_total += current_blue
                         colour_count += 1
-
-                new_red = red_total / colour_count
+# Have to swap red and blue here sometimes... No idea why. Maybe png and jpg render bgr not rgb
+                new_blue = red_total / colour_count
                 new_green = green_total / colour_count
-                new_blue = blue_total / colour_count
+                new_red = blue_total / colour_count
 
-                pixel_array[currentStartX: currentStartX + tile_size - 5, currentStartY: currentStartY + tile_size - 5] = (new_red, new_green, new_blue)
+                pixel_array[currentStartX: currentStartX + tile_size - tile_spacing, currentStartY: currentStartY + tile_size - tile_spacing] = (new_red, new_green, new_blue)
 
                 colour_count = 0
                 red_total = 0
