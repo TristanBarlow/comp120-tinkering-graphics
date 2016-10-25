@@ -26,8 +26,8 @@ def distance(red1, red2, green1, green2, blue1, blue2):
     diffred = math.pow(red1 - red2,2)
     diffgreen = math.pow(green1 - green2,2)
     diffblue = math.pow(blue1- blue2,2)
-    likness = math.sqrt(diffblue +diffgreen +diffred)
-    return likness
+    likeeness = math.sqrt(diffblue +diffgreen +diffred)
+    return likeness
 
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 Picture = pygame.image.load("cool_cat.jpg")
@@ -42,7 +42,7 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-#Blurs When 'w' is pressed.
+# Blurs When 'w' is pressed.
     if keys[pygame.K_w]:
         for y in xrange(0,HEIGHT1):
             for x in xrange(0,WIDTH1):
@@ -56,7 +56,7 @@ while True:
                 green_final = (green+green1)/2
                 blue_final = (blue+blue1)/2
                 px_array[x:x+2,y:y+2] = (red_final, green_final, blue_final)
-#Inverts colours when 'q' is pressed.
+# Inverts colours when 'q' is pressed.
     if keys[pygame.K_q]:
         for y in xrange(0,HEIGHT1):
             for x in xrange(0,WIDTH1):
@@ -67,7 +67,7 @@ while True:
                 blue_final = red
                 green_final = blue
                 px_array[x,y] = (red_final, green_final, blue_final)
-#Night Vision when e is pressed
+# Night Vision when e is pressed
     if keys[pygame.K_e]:
         for y in xrange(0,HEIGHT1):
             for x in xrange(0,WIDTH1):
@@ -78,7 +78,7 @@ while True:
                 green_final = reduce_colours(green)
                 blue_final = green*0.3
                 px_array[x,y] = (red_final, green_final, blue_final)
-#work in progress blurs back ground
+# work in progress blurs back ground
     if keys[pygame.K_r]:
         for y in xrange(0,HEIGHT1,2):
             for x in xrange(0,WIDTH1,2):
@@ -95,7 +95,7 @@ while True:
                     blue_final = (blue+blue1)/2
                     px_array[x:x+1,y:y+1] = (red_final, green_final, blue_final)
     del px_array
-#Blits original picture
+# Blits original picture
     if keys[pygame.K_SPACE]:
         window.blit(PictureTrans, (0, 0))
     pygame.display.update()
