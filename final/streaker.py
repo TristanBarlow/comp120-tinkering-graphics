@@ -82,13 +82,9 @@ while True:
                 else:
                     pxArray[x, y] = BLACK
 
-        print ('checkpoint2')
-
         pict = pxArray.make_surface()
 
         del pxArray
-
-        print('checkpoint3')
 
         window.blit(pict, (0, 0))
 
