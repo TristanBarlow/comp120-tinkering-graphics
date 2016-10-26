@@ -13,9 +13,9 @@ BLUE = (0, 0, 255)
 HEIGHT = 900
 WIDTH = 900
 a=1
-b=452
+b = (HEIGHT + 4) / 2
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
-picture = pygame.image.load("pic4.png")
+picture = pygame.image.load("pic7.jpg")
 picture_transformed = pygame.transform.scale(picture, (WIDTH,HEIGHT))
 window.blit(picture_transformed,(0,0))
 
@@ -36,9 +36,8 @@ def distance(r_1, r_2, g_1, g_2, b_1, b_2):
     return likeness
 
 
-def circle():
+def circle(b):
     for y in range(0, HEIGHT / 2):
-        b = (HEIGHT+4)/2
         b -= 1
         x = WIDTH / 2
         red = window.get_at((x, y)).r
@@ -162,7 +161,7 @@ while True:
                 
 # Press y for circles
     if keys[pygame.K_y]:
-        circle()
+        circle(b)
 
 # Adds outline
     if keys[pygame.K_u]:
