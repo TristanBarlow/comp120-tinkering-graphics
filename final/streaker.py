@@ -83,8 +83,10 @@ while True:
                                        math.pow(current_green, 2) +
                                        math.pow(current_blue, 2))
 
-                # if pixel
+                # If pixel above or below the average, do something interesting
                 if sum_of_squares > sum_of_squares_average:
+
+                    # Create a tail fading to black from that pixel
                     for i in range (0, tail_length):
                         if x - i > 0:
                             new_red =  current_red - (current_red * i / tail_length)
@@ -94,21 +96,19 @@ while True:
                             pixel_array[x - i, y] = (new_blue, new_green, new_red)
 
                 else:
+                    # Completes the effect of tail fading to black, by setting all else to black,
                     pixel_array[x, y] = BLACK
 
+        # Draw new picture from altered pixel_array
         pict = pixel_array.make_surface()
-
         del pixel_array
 
         window.blit(pict, (0, 0))
-
         pygame.display.update()
 
-        print('checkpoint4')
-
-        pygame.time.wait(10000)
-
-        #clock.tick
+    #pygame.time.wait(10000)
+    time.clock()
+    clock.tick(15)
 
 
 
