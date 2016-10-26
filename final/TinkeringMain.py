@@ -35,6 +35,7 @@ def distance(r_1, r_2, g_1, g_2, b_1, b_2):
     likeness = math.sqrt(difference_blue + difference_green + difference_red)
     return likeness
 
+
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
