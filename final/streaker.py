@@ -54,6 +54,7 @@ while True:
                 current_red = window.get_at((x, y)).r
                 current_green = window.get_at((x, y)).g
                 current_blue = window.get_at((x, y)).b
+                current_alpha = window.get_at((x, y)).a
 
                 # Calculate a strength comparison value for the pixel
                 sum_of_squares = math.sqrt(math.pow(current_red, 2) +
