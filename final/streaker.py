@@ -29,13 +29,14 @@ run_once = True
 
 
 while True:
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
     if run_once:
         run_once = False
-
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
 
         print ('Reading source picture...')
 
@@ -106,8 +107,7 @@ while True:
         window.blit(pict, (0, 0))
         pygame.display.update()
 
-    #pygame.time.wait(10000)
-    time.clock()
+    clock = pygame.time.Clock()
     clock.tick(15)
 
 
