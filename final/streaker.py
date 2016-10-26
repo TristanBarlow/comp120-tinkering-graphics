@@ -4,26 +4,25 @@ from pygame.locals import *
 pygame.init()
 pygame.mixer.init()
 
-# Declare all variables etc
+# Declare all variables
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-windowWidth = 600
-windowHeight = 400
+window_width = 600
+window_height = 400
 
-tailLength = 200
-lumTotal = 0
-lumCount = 0
-average_total = 0
-average_counter = 0
-first_pass_average = 0
+tail_length = 200
+sum_of_squares_total = 0
+sum_of_squares_count = 0
 
-window = pygame.display.set_mode((windowWidth, windowHeight))
+window = pygame.display.set_mode((window_width, window_height))
+
+# Insert picture name to load below
 picture = pygame.image.load('cool_cat.jpg')
-picture = pygame.transform.scale(picture, (windowWidth, windowHeight))
+picture = pygame.transform.scale(picture, (window_width, window_height))
 
 window.blit(picture, (0, 0))
 run_once = True
@@ -38,53 +37,68 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-        pxArray = pygame.PixelArray(picture)
+        print ('Reading source picture...')
 
-        for x in range(0, windowWidth - 1):
-            for y in range(0, windowHeight - 1):
-                currentRed = window.get_at((x, y)).r
-                currentGreen = window.get_at((x, y)).g
-                currentBlue = window.get_at((x, y)).b
+        pixel_array = pygame.PixelArray(picture)
 
-                luminosity = math.sqrt(math.pow(currentRed, 2) +
-                                       math.pow(currentGreen, 2) +
-                                       math.pow(currentBlue, 2))
+        # First cycle
+        # Get the rgb values of every pixel in picture
+        for x in range(0, window_width - 1):
+            for y in range(0, window_height - 1):
+                current_red = window.get_at((x, y)).r
+                current_green = window.get_at((x, y)).g
+                current_blue = window.get_at((x, y)).b
 
-                if luminosity != 0 or luminosity < 440:
-                    lumTotal += luminosity
-                    lumCount += 1
+                # Calculate a strength comparison value for the pixel
+                sum_of_squares = math.sqrt(math.pow(current_red, 2) +
+                                       math.pow(current_green, 2) +
+                                       math.pow(current_blue, 2))
 
-        lumAverage = lumTotal / lumCount
-        print('checkpoint1')
-        print('average luminosity: ')
-        print lumAverage
-        print lumCount
+                # Ignore pure white and black outliers
+                if sum_of_squares != 0 or sum_of_squares < 440:
 
-        for x in range(0, windowWidth - 1):
-            for y in range(0, windowHeight - 1):
-                currentRed = window.get_at((x, y)).r
-                currentGreen = window.get_at((x, y)).g
-                currentBlue = window.get_at((x, y)).b
-                currentAlpha = window.get_at((x, y)).a
+                    # Keep a running total and count number to calculate average, ignoring outliers
+                    sum_of_squares_total += sum_of_squares
+                    sum_of_squares_count += 1
 
-                luminosity = math.sqrt(math.pow(currentRed, 2) +
-                                       math.pow(currentGreen, 2) +
-                                       math.pow(currentBlue, 2))
+        sum_of_squares_average = sum_of_squares_total / sum_of_squares_count
 
-                if luminosity > lumAverage:
-                    for i in range (0, tailLength):
+        # First cycle checkpoint... This can take a while to get to
+        print ('Average sum_of_squares:')
+        print sum_of_squares_average
+        print ('Over this many pixels:')
+        print sum_of_squares_count
+        print ('Calculating "art".')
+        print ('This may take a while...')
+
+        # Second cycle
+        # Looks at every pixel in picture and compares it's strength value to the average calculated in first cycle
+        for x in range(0, window_width - 1):
+            for y in range(0, window_height - 1):
+                current_red = window.get_at((x, y)).r
+                current_green = window.get_at((x, y)).g
+                current_blue = window.get_at((x, y)).b
+
+                sum_of_squares = math.sqrt(math.pow(current_red, 2) +
+                                       math.pow(current_green, 2) +
+                                       math.pow(current_blue, 2))
+
+                # if pixel
+                if sum_of_squares > sum_of_squares_average:
+                    for i in range (0, tail_length):
                         if x - i > 0:
-                            newRed =  currentRed - (currentRed * i / tailLength)
-                            newGreen = currentGreen - (currentGreen * i / tailLength)
-                            newBlue = currentBlue - (currentBlue * i / tailLength)
+                            new_red =  current_red - (current_red * i / tail_length)
+                            new_green = current_green - (current_green * i / tail_length)
+                            new_blue = current_blue - (current_blue * i / tail_length)
 
-                            pxArray[x - i, y] = (newBlue, newGreen, newRed)
+                            pixel_array[x - i, y] = (new_blue, new_green, new_red)
+
                 else:
-                    pxArray[x, y] = BLACK
+                    pixel_array[x, y] = BLACK
 
-        pict = pxArray.make_surface()
+        pict = pixel_array.make_surface()
 
-        del pxArray
+        del pixel_array
 
         window.blit(pict, (0, 0))
 

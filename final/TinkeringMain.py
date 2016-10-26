@@ -28,7 +28,7 @@ def distance(red1, red2, green1, green2, blue1, blue2):
     return likness
 
 window = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
-Picture = pygame.image.load("pic8.jpg")
+Picture = pygame.image.load("pic5.png")
 PictureTrans = pygame.transform.scale(Picture, (WIDTH,HEIGHT))
 window.blit(PictureTrans,(0,0))
 while True:
