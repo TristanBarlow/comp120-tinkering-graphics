@@ -23,7 +23,7 @@ ignore_next_batch_count = 0
 window = pygame.display.set_mode((window_width, window_height))
 
 # Insert picture name to load below
-picture = pygame.image.load('pic2.jpg')
+picture = pygame.image.load('cool_cat.jpg')
 picture = pygame.transform.scale(picture, (window_width, window_height))
 
 window.blit(picture, (0, 0))
@@ -102,7 +102,7 @@ while True:
                                            math.pow(current_blue, 2))
 
                     # If pixel above or below the average, do something interesting
-                    if sum_of_squares < sum_of_squares_average:
+                    if sum_of_squares > sum_of_squares_average:
 
                         # Create a tail fading to black from that pixel
                         for i in range (0, tail_length):
