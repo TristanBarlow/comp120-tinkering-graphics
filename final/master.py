@@ -328,6 +328,7 @@ def print_controls():
     print ('I - Horizontal lines, fading, chosen by strength')
     print ('O - Simplify colours')
     print ('P - Pixelise, with tile effect')
+    print ('L - P then O combo. Works well.')
 
 print_controls()
 
@@ -382,6 +383,12 @@ while True:
     # Pixelise picture in interesting ways
     if keys[pygame.K_p]:
         pixelise_is_a_word_stop_underlining_it_in_grey()
+
+    # Good combos
+    if keys[pygame.K_l]:
+        pixelise_is_a_word_stop_underlining_it_in_grey()
+        px_array = pygame.PixelArray(window)
+        simplify_colour()
 
     # Blits original picture
     if keys[pygame.K_SPACE]:
