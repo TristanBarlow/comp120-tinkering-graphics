@@ -2,7 +2,6 @@ import pygame, sys, time, random, math
 from pygame.locals import *
 
 pygame.init()
-pygame.mixer.init()
 
 # Declare all variables
 BLACK = (0, 0, 0)
@@ -117,7 +116,6 @@ while True:
                     else:
                         # Completes the effect of tail fading to black, by setting all else to black,
                         pixel_array[x, y] = BLACK
-
 
         # Draw new picture from altered pixel_array
         pict = pixel_array.make_surface()

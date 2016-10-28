@@ -4,7 +4,6 @@ from pygame.locals import *
 #import TinkeringMain.py
 
 pygame.init()
-pygame.mixer.init()
 
 # Declare all variables etc
 BLACK = (0, 0, 0)
@@ -20,10 +19,7 @@ tile_size = 20
 tile_spacing = 5
 run_once = True
 
-red_total = 0
-green_total = 0
-blue_total = 0
-luminosity_total = 0
+
 
 colour_count = 0
 
@@ -50,6 +46,12 @@ while True:
 
         for currentStartX in range(0, window_width, tile_size):
             for currentStartY in range (0, window_height, tile_size):
+
+                red_total = 0
+                green_total = 0
+                blue_total = 0
+                colour_count = 0
+
                 for x in range(currentStartX, currentStartX + tile_size - 1):
                     for y in range(currentStartY, currentStartY + tile_size - 1):
 
@@ -68,11 +70,7 @@ while True:
 
                 pixel_array[currentStartX: currentStartX + tile_size - tile_spacing, currentStartY: currentStartY + tile_size - tile_spacing] = (new_red, new_green, new_blue)
 
-                colour_count = 0
-                red_total = 0
-                green_total = 0
-                blue_total = 0
-                luminosity_total = 0
+
 
         pict = pixel_array.make_surface()
 
