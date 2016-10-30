@@ -329,6 +329,7 @@ def print_controls():
     print ('O - Simplify colours')
     print ('P - Pixelise, with tile effect')
     print ('L - P then O combo. Works well.')
+    print ('Space - Reset')
 
 print_controls()
 
