@@ -55,13 +55,13 @@ def distance(r_1, r_2, g_1, g_2, b_1, b_2):
 
 def circle():
     for y in range(0, HEIGHT / 2):
-        b = (HEIGHT + 4) / 2
-        b -= 1
+        a = (HEIGHT/2)+1
+        radius = (a-y)
         x = WIDTH / 2
         red = window.get_at((x, y)).r
         green = window.get_at((x, y)).g
         blue = window.get_at((x, y)).b
-        pygame.draw.circle(window, (red, green, blue), (WIDTH / 2, HEIGHT / 2), b, 1)
+        pygame.draw.circle(window, (red, green, blue), (WIDTH / 2, HEIGHT / 2), radius, 1)
 
 
 def outline():
