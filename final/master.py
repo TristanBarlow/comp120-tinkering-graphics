@@ -29,6 +29,9 @@ run_once = True
 
 
 # Define functions
+
+
+# Stops the error when a colour value is greater than 255 or less than 0
 def clamp(value):
     if value > 255:
         clamped_value = 255
@@ -39,12 +42,14 @@ def clamp(value):
     return clamped_value
 
 
-def reduce_colours(color_change):
-    if 175 < color_change < 255:
+# changes colours if within the a certain range.
+def cap_colours(color_change):
+    if 100 < color_change < 255:
         color_change = 215
     return color_change
 
 
+# uses pythagoras to calculate distance between the colors 
 def distance(r_1, r_2, g_1, g_2, b_1, b_2):
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
@@ -55,7 +60,7 @@ def distance(r_1, r_2, g_1, g_2, b_1, b_2):
 
 def circle():
     for y in range(0, HEIGHT / 2):
-        a = (HEIGHT/2)+1
+        a = (HEIGHT/2)           # Uses The height to determine maximum radius
         radius = (a-y)
         x = WIDTH / 2
         red = window.get_at((x, y)).r
@@ -81,6 +86,7 @@ def outline():
                 px_array[x, y] = (255, 255, 255)
 
 
+# draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour.
 def water_fall():
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
@@ -94,6 +100,7 @@ def water_fall():
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, 1, likeness / 10), )
 
 
+# draws horizontal lines, the size and colour of the lines depend on their horzontal neighbour.
 def horizontal_lines():
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
@@ -106,32 +113,34 @@ def horizontal_lines():
             likeness = distance(red, red_1, green, green_1, blue, blue_1)
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
-
+# caps the green colour and reduces the other colours to give a green tint.
 def night_vision():
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
             green = window.get_at((x, y)).g
             blue = window.get_at((x, y)).b
-            red_final = red * 0.3
-            green_final = reduce_colours(green)
-            blue_final = green * 0.3
+            red_final = red*0.4
+            green_final = cap_colours(green)
+            blue_final = blue*0.4
             px_array[x, y] = (red_final, green_final, blue_final)
 
 
+# simply swaps the colour value around.
 def color_invert():
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
             green = window.get_at((x, y)).g
             blue = window.get_at((x, y)).b
-            red_final = green
+            red_final = green   # not necessary but added a final variable for clarity.
             blue_final = red
             green_final = blue
             px_array[x, y] = (red_final, green_final, blue_final)
 
 
 def blur_picture(a):
+    a = -a          # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -140,7 +149,7 @@ def blur_picture(a):
             red_1 = window.get_at((x + a, y + a)).r
             green_1 = window.get_at((x + a, y + a)).g
             blue_1 = window.get_at((x + a, y + a)).b
-            red_final = (red + red_1) / 2
+            red_final = (red + red_1) / 2           # averages the value of the two red pixels
             green_final = (green + green_1) / 2
             blue_final = (blue + blue_1) / 2
             px_array[x:x + 1, y:y + 1] = (red_final, green_final, blue_final)
@@ -338,7 +347,7 @@ while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
     clock = pygame.time.Clock()
-    clock.tick(200)
+    clock.tick(10)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -346,7 +355,6 @@ while True:
 
     # Blurs When 'w' is pressed
     if keys[pygame.K_w]:
-        a = -a
         blur_picture(a)
 
     # Inverts colours when 'q' is pressed
