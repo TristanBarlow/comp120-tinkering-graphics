@@ -21,9 +21,7 @@ picture = pygame.image.load('cool_cat.jpg')
 picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
 window.blit(picture, (0, 0))
-
 a = 1
-b = 452
 switch_comparison_direction = 1
 run_once = True
 
@@ -50,7 +48,7 @@ def cap_colours(color_change):
 
 
 # uses pythagoras to calculate distance between the colors 
-def distance(r_1, r_2, g_1, g_2, b_1, b_2):
+def distance(r_1, g_1, b_1, r_2, g_2, b_2):
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
     difference_blue = math.pow(b_1 - b_2, 2)
@@ -72,7 +70,6 @@ def circle():
 def outline():
     for x in xrange(1, WIDTH - 1):
         for y in xrange(1, HEIGHT - 1):
-            px_array = pygame.PixelArray(window)
             red = window.get_at((x, y)).r
             green = window.get_at((x, y)).g
             blue = window.get_at((x, y)).b
