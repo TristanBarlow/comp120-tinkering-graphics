@@ -345,6 +345,8 @@ controls = {'q': circle,
             'o': simplify_colour,
             'p': pixelise,
             'a': good_combo}
+
+
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
