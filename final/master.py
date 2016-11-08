@@ -280,7 +280,7 @@ def simplify_colour():
             px_array[x, y] = (new_red, new_green, new_blue)
 
 
-def pixelise_is_a_word_stop_underlining_it_in_grey():
+def pixelise():
 
     tile_size = 20
     tile_spacing = 5
@@ -321,74 +321,33 @@ def pixelise_is_a_word_stop_underlining_it_in_grey():
     window.blit(pict, (0, 0))
     pygame.display.update()
 
-
-def print_controls():
-    print ('Controls:')
-    print ('Q - Invert colours')
-    print ('W - Blur')
-    print ('E - Night vision')
-    print ('R - Waterfall')
-    print ('T - Horizontal lines, length is similarity strength')
-    print ('Y - Circles')
-    print ('U - Outline')
-    print ('I - Horizontal lines, fading, chosen by strength')
-    print ('O - Simplify colours')
-    print ('P - Pixelise, with tile effect')
-    print ('L - P then O combo. Works well.')
-    print ('Space - Reset')
-
-print_controls()
-
+controls = {'q': circle,
+            'w': blur_picture,
+            'e': night_vision,
+            'r': color_invert,
+            't': outline,
+            'y': water_fall,
+            'u': horizontal_lines,
+            'i': streaker,
+            'o': simplify_colour,
+            'p': pixelise}
 
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
     clock = pygame.time.Clock()
     clock.tick(10)
+    print controls
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
-    # Blurs When 'w' is pressed
-    if keys[pygame.K_w]:
-        blur_picture(a)
-
-    # Inverts colours when 'q' is pressed
-    if keys[pygame.K_q]:
-        color_invert()
-
-    # Night Vision when e is pressed
-    if keys[pygame.K_e]:
-        night_vision()
-
-    # Press r for vertical lines
-    if keys[pygame.K_r]:
-        water_fall()
-
-    # Press t for horizontal lines
-    if keys[pygame.K_t]:
-        horizontal_lines()
-
-    # Press y for circles
-    if keys[pygame.K_y]:
-        circle()
-
-    # Adds outline
-    if keys[pygame.K_u]:
-        outline()
-
-    # Fading streak effect comparison
-    if keys[pygame.K_i]:
-        streaker()
-
-    # Simplifies the colours
-    if keys[pygame.K_o]:
-        simplify_colour()
-
-    # Pixelise picture in interesting ways
-    if keys[pygame.K_p]:
-        pixelise_is_a_word_stop_underlining_it_in_grey()
+    if event.type == pygame.KEYDOWN:
+        which_key = pygame.key.name(event.key)
+        print which_key
+        command = controls[which_key]
+        command()
 
     # Good combos
     if keys[pygame.K_l]:
