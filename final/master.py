@@ -24,9 +24,11 @@ window.blit(picture, (0, 0))
 switch_comparison_direction = 1
 run_once = True
 
+
 # Define functions
 class KeyException(Exception):
     pass
+
 
 # Stops the error when a colour value is greater than 255 or less than 0
 def clamp(value):
