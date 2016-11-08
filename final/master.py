@@ -111,6 +111,7 @@ def horizontal_lines():
             likeness = distance(red, green, blue, red_1, green_1, blue_1,)
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
+
 # caps the green colour and reduces the other colours to give a green tint.
 def night_vision():
     for y in xrange(1, HEIGHT - 1):
@@ -136,9 +137,11 @@ def color_invert():
             green_final = blue
             px_array[x, y] = (red_final, green_final, blue_final)
 
+
 def blur_picture_1():
     a = 1
     blur_picture(a)
+
 
 def blur_picture(a):
     a = a*-1                    # used so that each time blur is called it will blur in the opposite direction
@@ -263,7 +266,6 @@ def streaker():
         print ('press space to reset.')
 
 
-
 def simplify_colour():
     px_array = pygame.PixelArray(window)
 
@@ -325,6 +327,7 @@ def pixelise():
 
     window.blit(pict, (0, 0))
     pygame.display.update()
+
 
 def good_combo():
     pixelise()
