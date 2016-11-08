@@ -93,7 +93,7 @@ def water_fall():
             red_1 = window.get_at((x, y + 1)).r
             green_1 = window.get_at((x, y + 1)).g
             blue_1 = window.get_at((x, y + 1)).b
-            likeness = distance(red, red_1, green, green_1, blue, blue_1)
+            likeness = distance(red, green, blue, red_1, green_1, blue_1,)
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, 1, likeness / 10), )
 
 
@@ -107,7 +107,7 @@ def horizontal_lines():
             red_1 = window.get_at((x + 1, y)).r
             green_1 = window.get_at((x + 1, y)).g
             blue_1 = window.get_at((x + 1, y)).b
-            likeness = distance(red, red_1, green, green_1, blue, blue_1)
+            likeness = distance(red, green, blue, red_1, green_1, blue_1,)
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
 # caps the green colour and reduces the other colours to give a green tint.
