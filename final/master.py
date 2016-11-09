@@ -25,8 +25,7 @@ switch_comparison_direction = 1
 run_once = True
 
 # Define functions
-class KeyException(Exception):
-    pass
+
 
 # Stops the error when a colour value is greater than 255 or less than 0
 def clamp(value):
@@ -77,9 +76,9 @@ def outline():
             blue_1 = window.get_at((x + 1, y)).b
             likeness = distance(red, red_1, green, green_1, blue, blue_1)
             if likeness > 150:
-                px_array[x, y] = (BLACK)
+                px_array[x, y] = BLACK
             else:
-                px_array[x, y] = (WHITE)
+                px_array[x, y] = WHITE
 
 
 # draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour.
@@ -109,6 +108,7 @@ def horizontal_lines():
             likeness = distance(red, green, blue, red_1, green_1, blue_1,)
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
+
 # caps the green colour and reduces the other colours to give a green tint.
 def night_vision():
     for y in xrange(1, HEIGHT - 1):
@@ -134,12 +134,14 @@ def color_invert():
             green_final = blue
             px_array[x, y] = (red_final, green_final, blue_final)
 
+
 def blur_picture_1():
     a = 1
     blur_picture(a)
 
+
 def blur_picture(a):
-    a = a*-1                    # used so that each time blur is called it will blur in the opposite direction
+    a *= -a                    # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -259,7 +261,6 @@ def streaker():
     else:
         print ('It really will turn black if you run it again.')
         print ('press space to reset.')
-
 
 
 def simplify_colour():
