@@ -27,9 +27,7 @@ run_once = True
 
 # Define functions
 
-
-
-# Stops the error when a colour value is greater than 255 or less than 0
+# Clamps a colour value to within 0 and 255
 def clamp(value):
     if value > 255:
         clamped_value = 255
@@ -40,15 +38,15 @@ def clamp(value):
     return clamped_value
 
 
-# changes colours if within the a certain range.
 def cap_colours(color_change):
+    """Changes colours if within a range"""
     if 100 < color_change < 255:
         color_change = 215
     return color_change
 
 
-# uses pythagoras to calculate distance between the colors 
 def distance(r_1, g_1, b_1, r_2, g_2, b_2):
+    """uses pythagoras theorem to calculate distance between the colors"""
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
     difference_blue = math.pow(b_1 - b_2, 2)
