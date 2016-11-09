@@ -144,7 +144,7 @@ def blur_picture_1():
 
 def streaker_1():
     """passes an argument into function not possible from dictionary delegate"""
-    streaker(run_once, switch_comparison_direction)
+    streaker(run_once, switch_comparison_direction, px_array)
 
 
 def blur_picture(a):
@@ -164,7 +164,7 @@ def blur_picture(a):
             px_array[x:x + 1, y:y + 1] = (red_final, green_final, blue_final)
 
 
-def streaker(run_once, switch_comparison_direction):
+def streaker(run_once, switch_comparison_direction, px_array):
     """Runs once, does two passes, firstly determines an average value of the numerical distance
     of the colour values, secondly compares every value to the average and draws a tail fading to
     black. Abstract effect based off the colour strengths essentially"""
@@ -329,10 +329,6 @@ def pixelise():
     pygame.display.update()
 
 
-def good_combo():
-    pixelise()
-    simplify_colour()
-
 # creates dictionary for controls.
 controls = {'q': circle,
             'w': blur_picture_1,
@@ -343,8 +339,7 @@ controls = {'q': circle,
             'u': horizontal_lines,
             'i': streaker_1,
             'o': simplify_colour,
-            'p': pixelise,
-            'a': good_combo}
+            'p': pixelise,}
 
 
 def print_controls():
