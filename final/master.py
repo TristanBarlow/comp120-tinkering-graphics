@@ -142,8 +142,12 @@ def blur_picture_1():
     blur_picture(a)
 
 
+def streaker_1():
+    streaker(run_once, switch_comparison_direction)
+
+
 def blur_picture(a):
-    a *= -a                             # used so that each time blur is called it will blur in the opposite direction
+    a *= -a                                             # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -158,10 +162,7 @@ def blur_picture(a):
             px_array[x:x + 1, y:y + 1] = (red_final, green_final, blue_final)
 
 
-def streaker():
-    global run_once
-    global switch_comparison_direction
-    global px_array
+def streaker(run_once, switch_comparison_direction):
     tail_length = 200
     sum_of_squares_total = 0
     sum_of_squares_count = 0
@@ -170,9 +171,6 @@ def streaker():
     if run_once:
         run_once = False
         print ('Reading source picture...')
-
-        # Porting variable names to master .py file
-        pixel_array = px_array
 
         # First cycle
         # Get the rgb values of every pixel in picture
@@ -213,7 +211,7 @@ def streaker():
                 # Had to put in a check to stop overdraw once a tail was drawn
                 if ignore_next_batch:
                     ignore_next_batch_count += 1
-                    pixel_array[x, y] = BLACK
+                    px_array[x, y] = BLACK
                     if ignore_next_batch_count == tail_length:
                         ignore_next_batch = False
                         ignore_next_batch_count = 0
@@ -242,16 +240,15 @@ def streaker():
                                 new_green = current_green - (current_green * i / tail_length)
                                 new_blue = current_blue - (current_blue * i / tail_length)
 
-                                pixel_array[x - i, y] = (new_red, new_green, new_blue)
+                                px_array[x - i, y] = (new_red, new_green, new_blue)
                                 ignore_next_batch = True
 
                     else:
                         # Completes the effect of tail fading to black, by setting all else to black,
-                        pixel_array[x, y] = BLACK
+                        px_array[x, y] = BLACK
 
-        # Draw new picture from altered pixel_array
-        pict = pixel_array.make_surface()
-        del pixel_array
+        # Draw new picture from altered px_array
+        pict = px_array.make_surface()
         del px_array
 
         window.blit(pict, (0, 0))
@@ -318,10 +315,9 @@ def pixelise():
             new_blue = blue_total / colour_count
 
             pixel_array[current_start_x: current_start_x + TILE_SIZE - TILE_SPACING,
-                current_start_y: current_start_y + TILE_SIZE - TILE_SPACING] = (new_red, new_green, new_blue)
+                        current_start_y: current_start_y + TILE_SIZE - TILE_SPACING] = (new_red, new_green, new_blue)
 
-    pict = pixel_array.make_surface()
-    del pixel_array
+    pict = px_array.make_surface()
     del px_array
 
     window.blit(pict, (0, 0))
@@ -340,7 +336,7 @@ controls = {'q': circle,
             't': outline,
             'y': water_fall,
             'u': horizontal_lines,
-            'i': streaker,
+            'i': streaker_1,
             'o': simplify_colour,
             'p': pixelise,
             'a': good_combo}
@@ -358,7 +354,6 @@ def print_controls():
     print ('I - Horizontal lines, fading, chosen by strength')
     print ('O - Simplify colours')
     print ('P - Pixelise, with tile effect')
-    print ('L - P then O combo. Works well.')
     print ('Space - Reset')
 
 print_controls()
