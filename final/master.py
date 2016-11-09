@@ -24,7 +24,9 @@ window.blit(picture, (0, 0))
 switch_comparison_direction = 1
 run_once = True
 
+
 # Define functions
+
 
 
 # Stops the error when a colour value is greater than 255 or less than 0
@@ -325,6 +327,7 @@ def pixelise():
     window.blit(pict, (0, 0))
     pygame.display.update()
 
+
 def good_combo():
     pixelise()
     px_array = pygame.PixelArray(window)
@@ -341,6 +344,8 @@ controls = {'q': circle,
             'o': simplify_colour,
             'p': pixelise,
             'a': good_combo}
+
+
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
