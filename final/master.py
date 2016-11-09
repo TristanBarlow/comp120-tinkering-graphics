@@ -46,7 +46,7 @@ def cap_colours(color_change):
 
 
 def distance(r_1, g_1, b_1, r_2, g_2, b_2):
-    """uses pythagoras theorem to calculate distance between the colors"""
+    """uses pythagoras theorem to calculate numerical distance between the colors"""
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
     difference_blue = math.pow(b_1 - b_2, 2)
@@ -55,6 +55,7 @@ def distance(r_1, g_1, b_1, r_2, g_2, b_2):
 
 
 def circle():
+    """draws circles based on pixel colours"""
     for y in range(0, HEIGHT / 2):
         a = (HEIGHT/2)           # Uses The height to determine maximum radius
         radius = (a-y)
@@ -66,6 +67,7 @@ def circle():
 
 
 def outline():
+    """calculates and draws outline"""
     for x in xrange(1, WIDTH - 1):
         for y in xrange(1, HEIGHT - 1):
             red = window.get_at((x, y)).r
@@ -81,8 +83,8 @@ def outline():
                 px_array[x, y] = WHITE
 
 
-# draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour.
 def water_fall():
+    """draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -95,8 +97,8 @@ def water_fall():
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, 1, likeness / 10), )
 
 
-# draws horizontal lines, the size and colour of the lines depend on their horzontal neighbour.
 def horizontal_lines():
+    """draws horizontal lines, the size and colour of the lines depend on their horizontal neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -109,8 +111,8 @@ def horizontal_lines():
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
 
-# caps the green colour and reduces the other colours to give a green tint.
 def night_vision():
+    """clamps the green colour and reduces the other colours to give a green tint"""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -122,8 +124,8 @@ def night_vision():
             px_array[x, y] = (red_final, green_final, blue_final)
 
 
-# simply swaps the colour value around.
 def color_invert():
+    """swaps the colour value around"""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -141,7 +143,8 @@ def blur_picture_1():
 
 
 def blur_picture(a):
-    a *= -a                    # used so that each time blur is called it will blur in the opposite direction
+    # used so that each time blur is called it will blur in the opposite direction
+    a *= -a
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
