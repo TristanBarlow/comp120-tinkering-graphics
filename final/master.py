@@ -347,6 +347,24 @@ controls = {'q': circle,
             'a': good_combo}
 
 
+def print_controls():
+    print ('Controls:')
+    print ('Q - Invert colours')
+    print ('W - Blur')
+    print ('E - Night vision')
+    print ('R - Waterfall')
+    print ('T - Horizontal lines, length is similarity strength')
+    print ('Y - Circles')
+    print ('U - Outline')
+    print ('I - Horizontal lines, fading, chosen by strength')
+    print ('O - Simplify colours')
+    print ('P - Pixelise, with tile effect')
+    print ('L - P then O combo. Works well.')
+    print ('Space - Reset')
+
+print_controls()
+
+
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
