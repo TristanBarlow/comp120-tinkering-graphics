@@ -138,8 +138,8 @@ def color_invert():
 
 
 def blur_picture_1():
-    a = 1
-    blur_picture(a)
+    """passes an argument into function """
+    blur_picture(1)
 
 
 def streaker_1():
