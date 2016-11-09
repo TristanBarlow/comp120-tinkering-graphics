@@ -131,7 +131,7 @@ def color_invert():
             red = window.get_at((x, y)).r
             green = window.get_at((x, y)).g
             blue = window.get_at((x, y)).b
-            red_final = green   # not necessary but added a final variable for clarity.
+            red_final = green                           # not necessary but added a final variable for clarity.
             blue_final = red
             green_final = blue
             px_array[x, y] = (red_final, green_final, blue_final)
@@ -143,7 +143,7 @@ def blur_picture_1():
 
 
 def blur_picture(a):
-    a *= -a                    # used so that each time blur is called it will blur in the opposite direction
+    a *= -a                             # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -152,7 +152,7 @@ def blur_picture(a):
             red_1 = window.get_at((x + a, y + a)).r
             green_1 = window.get_at((x + a, y + a)).g
             blue_1 = window.get_at((x + a, y + a)).b
-            red_final = (red + red_1) / 2           # averages the value of the two red pixels
+            red_final = (red + red_1) / 2                # averages the value of the two red pixels
             green_final = (green + green_1) / 2
             blue_final = (blue + blue_1) / 2
             px_array[x:x + 1, y:y + 1] = (red_final, green_final, blue_final)
@@ -332,6 +332,7 @@ def good_combo():
     pixelise()
     simplify_colour()
 
+# creates dictionary for controls.
 controls = {'q': circle,
             'w': blur_picture_1,
             'e': night_vision,
@@ -352,13 +353,13 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-
+    # Handles controls by referring to a dictionary.
     if event.type == pygame.KEYDOWN:
-        which_key = pygame.key.name(event.key)
+        which_key = pygame.key.name(event.key)              # gives back the key pressed as a string
         if which_key in controls:
-                command = controls[which_key]
-                command()
-        elif which_key != 'space':
+                command = controls[which_key]               # assigns function pointer dependent on key to command
+                command()                                   # actually executes the function refered to in the dict
+        elif which_key != 'space':                          # an exception so space isn't printed as not in use
             print('key ' + which_key + ' not in use')
 
     # Blits original picture
