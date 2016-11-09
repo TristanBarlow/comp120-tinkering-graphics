@@ -22,7 +22,6 @@ picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
 window.blit(picture, (0, 0))
 switch_comparison_direction = 1
-run_once = True
 
 TILE_SIZE = 20
 TILE_SPACING = 5
@@ -147,7 +146,7 @@ def blur_picture_1():
 
 def streaker_1():
     """passes an argument into function not possible from dictionary delegate"""
-    streaker(run_once, switch_comparison_direction, px_array)
+    streaker(switch_comparison_direction, px_array)
 
 
 def blur_picture(a):
@@ -167,7 +166,7 @@ def blur_picture(a):
             px_array[x:x + 1, y:y + 1] = (red_final, green_final, blue_final)
 
 
-def streaker(run_once, switch_comparison_direction, px_array):
+def streaker(switch_comparison_direction, px_array):
     """Runs once, does two passes, firstly determines an average value of the numerical distance
     of the colour values, secondly compares every value to the average and draws a tail fading to
     black. Abstract effect based off the colour strengths essentially"""
@@ -176,91 +175,86 @@ def streaker(run_once, switch_comparison_direction, px_array):
     sum_of_squares_count = 0
     ignore_next_batch = False
     ignore_next_batch_count = 0
-    if run_once:
-        run_once = False
-        print ('Reading source picture...')
 
-        # First cycle
-        # Get the rgb values of every pixel in picture
-        for x in xrange(0, WIDTH - 1):
-            for y in xrange(0, HEIGHT - 1):
+    print ('Reading source picture...')
+
+    # First cycle
+    # Get the rgb values of every pixel in picture
+    for x in xrange(0, WIDTH - 1):
+        for y in xrange(0, HEIGHT - 1):
+            current_red = window.get_at((x, y)).r
+            current_green = window.get_at((x, y)).g
+            current_blue = window.get_at((x, y)).b
+            current_alpha = window.get_at((x, y)).a
+
+            # Calculate a strength comparison value for the pixel
+            sum_of_squares = math.sqrt(math.pow(current_red, 2) +
+                                       math.pow(current_green, 2) +
+                                       math.pow(current_blue, 2))
+
+            # Ignore pure white and black outliers
+            if 10 < sum_of_squares < 440:
+
+                # Keep a running total and count number to calculate average, ignoring outliers
+                sum_of_squares_total += sum_of_squares
+                sum_of_squares_count += 1
+
+    sum_of_squares_average = sum_of_squares_total / sum_of_squares_count
+
+    # First cycle checkpoint... This can take a while to get to
+    print ('Average sum_of_squares:')
+    print sum_of_squares_average
+    print ('Over this many pixels:')
+    print sum_of_squares_count
+    print ('Calculating "art".')
+    print ('This may take a while...')
+
+    # Second cycle
+    # Looks at every pixel in picture and compares it's strength value to the average calculated in first cycle
+    for x in xrange(0, WIDTH - 1):
+        for y in xrange(0, HEIGHT - 1):
+
+            # Had to put in a check to stop overdraw once a tail was drawn
+            if ignore_next_batch:
+                ignore_next_batch_count += 1
+                px_array[x, y] = BLACK
+                if ignore_next_batch_count == tail_length:
+                    ignore_next_batch = False
+                    ignore_next_batch_count = 0
+            else:
+
+                # Check current pixel to compare against average obtained from first cycle
                 current_red = window.get_at((x, y)).r
                 current_green = window.get_at((x, y)).g
                 current_blue = window.get_at((x, y)).b
-                current_alpha = window.get_at((x, y)).a
 
-                # Calculate a strength comparison value for the pixel
                 sum_of_squares = math.sqrt(math.pow(current_red, 2) +
                                            math.pow(current_green, 2) +
                                            math.pow(current_blue, 2))
 
-                # Ignore pure white and black outliers
-                if 10 < sum_of_squares < 440:
+                # allows changing of the comparison parameters on successive executions
+                sum_of_squares *= switch_comparison_direction
+                sum_of_squares_average *= switch_comparison_direction
 
-                    # Keep a running total and count number to calculate average, ignoring outliers
-                    sum_of_squares_total += sum_of_squares
-                    sum_of_squares_count += 1
+                # If pixel above or below the average, do something interesting
+                if sum_of_squares > sum_of_squares_average:
 
-        sum_of_squares_average = sum_of_squares_total / sum_of_squares_count
+                    # Create a tail fading to black from that pixel
+                    for i in xrange(0, tail_length):
+                        if x - i > 0:
+                            new_red = current_red - (current_red * i / tail_length)
+                            new_green = current_green - (current_green * i / tail_length)
+                            new_blue = current_blue - (current_blue * i / tail_length)
 
-        # First cycle checkpoint... This can take a while to get to
-        print ('Average sum_of_squares:')
-        print sum_of_squares_average
-        print ('Over this many pixels:')
-        print sum_of_squares_count
-        print ('Calculating "art".')
-        print ('This may take a while...')
+                            px_array[x - i, y] = (new_red, new_green, new_blue)
+                            ignore_next_batch = True
 
-        # Second cycle
-        # Looks at every pixel in picture and compares it's strength value to the average calculated in first cycle
-        for x in xrange(0, WIDTH - 1):
-            for y in xrange(0, HEIGHT - 1):
-
-                # Had to put in a check to stop overdraw once a tail was drawn
-                if ignore_next_batch:
-                    ignore_next_batch_count += 1
-                    px_array[x, y] = BLACK
-                    if ignore_next_batch_count == tail_length:
-                        ignore_next_batch = False
-                        ignore_next_batch_count = 0
                 else:
+                    # Completes the effect of tail fading to black, by setting all else to black,
+                    px_array[x, y] = BLACK
 
-                    # Check current pixel to compare against average obtained from first cycle
-                    current_red = window.get_at((x, y)).r
-                    current_green = window.get_at((x, y)).g
-                    current_blue = window.get_at((x, y)).b
-
-                    sum_of_squares = math.sqrt(math.pow(current_red, 2) +
-                                               math.pow(current_green, 2) +
-                                               math.pow(current_blue, 2))
-
-                    # allows changing of the comparison parameters on successive executions
-                    sum_of_squares *= switch_comparison_direction
-                    sum_of_squares_average *= switch_comparison_direction
-
-                    # If pixel above or below the average, do something interesting
-                    if sum_of_squares > sum_of_squares_average:
-
-                        # Create a tail fading to black from that pixel
-                        for i in xrange(0, tail_length):
-                            if x - i > 0:
-                                new_red = current_red - (current_red * i / tail_length)
-                                new_green = current_green - (current_green * i / tail_length)
-                                new_blue = current_blue - (current_blue * i / tail_length)
-
-                                px_array[x - i, y] = (new_red, new_green, new_blue)
-                                ignore_next_batch = True
-
-                    else:
-                        # Completes the effect of tail fading to black, by setting all else to black,
-                        px_array[x, y] = BLACK
-
-        print ('Done, press space then i again if it is mostly black.')
-        switch_comparison_direction *= -1
-
-    else:
-        print ('It really will turn black if you run it again.')
-        print ('press space to reset.')
+    print ('Done, press space then i again if it is mostly black.')
+    switch_comparison_direction *= -1
 
 
 def simplify_colour():
@@ -360,12 +354,14 @@ while True:
                 command = controls[which_key]               # assigns function pointer dependent on key to command
                 command()                                   # actually executes the function refered to in the dict
         elif which_key != 'space':                          # an exception so space isn't printed as not in use
+            print ""
             print('key ' + which_key + ' not in use')
+            print ""
+            print_controls()
 
     # Blits original picture
     if keys[pygame.K_SPACE]:
         del px_array
         window.blit(picture, (0, 0))
-        run_once = True
 
     pygame.display.update()
