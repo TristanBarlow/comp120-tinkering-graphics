@@ -26,8 +26,7 @@ run_once = True
 
 
 # Define functions
-class KeyException(Exception):
-    pass
+
 
 
 # Stops the error when a colour value is greater than 255 or less than 0
@@ -79,9 +78,9 @@ def outline():
             blue_1 = window.get_at((x + 1, y)).b
             likeness = distance(red, red_1, green, green_1, blue, blue_1)
             if likeness > 150:
-                px_array[x, y] = (BLACK)
+                px_array[x, y] = BLACK
             else:
-                px_array[x, y] = (WHITE)
+                px_array[x, y] = WHITE
 
 
 # draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour.
@@ -144,7 +143,7 @@ def blur_picture_1():
 
 
 def blur_picture(a):
-    a = a*-1                    # used so that each time blur is called it will blur in the opposite direction
+    a *= -a                    # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -331,7 +330,6 @@ def pixelise():
 
 def good_combo():
     pixelise()
-    px_array = pygame.PixelArray(window)
     simplify_colour()
 
 controls = {'q': circle,
