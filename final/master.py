@@ -138,15 +138,17 @@ def color_invert():
 
 
 def blur_picture_1():
-    """passes an argument into function """
+    """passes an argument into function not possible from dictionary delegate"""
     blur_picture(1)
 
 
 def streaker_1():
+    """passes an argument into function not possible from dictionary delegate"""
     streaker(run_once, switch_comparison_direction)
 
 
 def blur_picture(a):
+    """blurs picture along different axis on subsequent presses"""
     a *= -a                                             # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
@@ -163,6 +165,9 @@ def blur_picture(a):
 
 
 def streaker(run_once, switch_comparison_direction):
+    """Runs once, does two passes, firstly determines an average value of the numerical distance
+    of the colour values, secondly compares every value to the average and draws a tail fading to
+    black. Abstract effect based off the colour strengths essentially"""
     tail_length = 200
     sum_of_squares_total = 0
     sum_of_squares_count = 0
