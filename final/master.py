@@ -56,7 +56,7 @@ def distance(r_1, g_1, b_1, r_2, g_2, b_2):
 
 def circle():
     """draws circles based on pixel colours"""
-    for y in range(0, HEIGHT / 2):
+    for y in xrange(0, HEIGHT / 2):
         a = (HEIGHT/2)           # Uses The height to determine maximum radius
         radius = (a-y)
         x = WIDTH / 2
@@ -176,8 +176,8 @@ def streaker():
 
         # First cycle
         # Get the rgb values of every pixel in picture
-        for x in range(0, WIDTH - 1):
-            for y in range(0, HEIGHT - 1):
+        for x in xrange(0, WIDTH - 1):
+            for y in xrange(0, HEIGHT - 1):
                 current_red = window.get_at((x, y)).r
                 current_green = window.get_at((x, y)).g
                 current_blue = window.get_at((x, y)).b
@@ -207,8 +207,8 @@ def streaker():
 
         # Second cycle
         # Looks at every pixel in picture and compares it's strength value to the average calculated in first cycle
-        for x in range(0, WIDTH - 1):
-            for y in range(0, HEIGHT - 1):
+        for x in xrange(0, WIDTH - 1):
+            for y in xrange(0, HEIGHT - 1):
 
                 # Had to put in a check to stop overdraw once a tail was drawn
                 if ignore_next_batch:
@@ -271,8 +271,8 @@ def simplify_colour():
     # The step in the colour range which each colour value will be rounded to
     simplify_strength = 255 / 3
 
-    for x in range(0, WIDTH - 1):
-        for y in range(0, HEIGHT - 1):
+    for x in xrange(0, WIDTH - 1):
+        for y in xrange(0, HEIGHT - 1):
             red = window.get_at((x, y)).r
             green = window.get_at((x, y)).g
             blue = window.get_at((x, y)).b
@@ -288,21 +288,21 @@ def simplify_colour():
 
 def pixelise():
 
-    tile_size = 20
-    tile_spacing = 5
+    TILE_SIZE = 20
+    TILE_SPACING = 5
     global px_array
     pixel_array = pygame.PixelArray(window)
 
-    for current_start_x in range(0, WIDTH, tile_size):
-        for current_start_y in range(0, HEIGHT, tile_size):
+    for current_start_x in xrange(0, WIDTH, TILE_SIZE):
+        for current_start_y in xrange(0, HEIGHT, TILE_SIZE):
 
             red_total = 0
             green_total = 0
             blue_total = 0
             colour_count = 0
 
-            for x in range(current_start_x, current_start_x + tile_size - 1):
-                for y in range(current_start_y, current_start_y + tile_size - 1):
+            for x in xrange(current_start_x, current_start_x + TILE_SIZE - 1):
+                for y in xrange(current_start_y, current_start_y + TILE_SIZE - 1):
                     current_red = window.get_at((x, y)).r
                     current_green = window.get_at((x, y)).g
                     current_blue = window.get_at((x, y)).b
@@ -317,8 +317,8 @@ def pixelise():
             new_green = green_total / colour_count
             new_blue = blue_total / colour_count
 
-            pixel_array[current_start_x: current_start_x + tile_size - tile_spacing,
-                current_start_y: current_start_y + tile_size - tile_spacing] = (new_red, new_green, new_blue)
+            pixel_array[current_start_x: current_start_x + TILE_SIZE - TILE_SPACING,
+                current_start_y: current_start_y + TILE_SIZE - TILE_SPACING] = (new_red, new_green, new_blue)
 
     pict = pixel_array.make_surface()
     del pixel_array
