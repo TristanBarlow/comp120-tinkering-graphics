@@ -330,7 +330,6 @@ def pixelise():
 
 def good_combo():
     pixelise()
-    px_array = pygame.PixelArray(window)
     simplify_colour()
 
 controls = {'q': circle,
