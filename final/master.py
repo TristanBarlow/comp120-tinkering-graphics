@@ -27,9 +27,7 @@ run_once = True
 
 # Define functions
 
-
-
-# Stops the error when a colour value is greater than 255 or less than 0
+# Clamps a colour value to within 0 and 255
 def clamp(value):
     if value > 255:
         clamped_value = 255
@@ -40,15 +38,15 @@ def clamp(value):
     return clamped_value
 
 
-# changes colours if within the a certain range.
 def cap_colours(color_change):
+    """Changes colours if within a range"""
     if 100 < color_change < 255:
         color_change = 215
     return color_change
 
 
-# uses pythagoras to calculate distance between the colors 
 def distance(r_1, g_1, b_1, r_2, g_2, b_2):
+    """uses pythagoras theorem to calculate numerical distance between the colors"""
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
     difference_blue = math.pow(b_1 - b_2, 2)
@@ -57,6 +55,7 @@ def distance(r_1, g_1, b_1, r_2, g_2, b_2):
 
 
 def circle():
+    """draws circles based on pixel colours"""
     for y in range(0, HEIGHT / 2):
         a = (HEIGHT/2)           # Uses The height to determine maximum radius
         radius = (a-y)
@@ -68,6 +67,7 @@ def circle():
 
 
 def outline():
+    """calculates and draws outline"""
     for x in xrange(1, WIDTH - 1):
         for y in xrange(1, HEIGHT - 1):
             red = window.get_at((x, y)).r
@@ -83,8 +83,8 @@ def outline():
                 px_array[x, y] = WHITE
 
 
-# draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour.
 def water_fall():
+    """draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -97,8 +97,8 @@ def water_fall():
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, 1, likeness / 10), )
 
 
-# draws horizontal lines, the size and colour of the lines depend on their horzontal neighbour.
 def horizontal_lines():
+    """draws horizontal lines, the size and colour of the lines depend on their horizontal neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -111,8 +111,8 @@ def horizontal_lines():
             pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
 
 
-# caps the green colour and reduces the other colours to give a green tint.
 def night_vision():
+    """clamps the green colour and reduces the other colours to give a green tint"""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -124,8 +124,8 @@ def night_vision():
             px_array[x, y] = (red_final, green_final, blue_final)
 
 
-# simply swaps the colour value around.
 def color_invert():
+    """swaps the colour value around"""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
             red = window.get_at((x, y)).r
@@ -344,6 +344,24 @@ controls = {'q': circle,
             'o': simplify_colour,
             'p': pixelise,
             'a': good_combo}
+
+
+def print_controls():
+    print ('Controls:')
+    print ('Q - Invert colours')
+    print ('W - Blur')
+    print ('E - Night vision')
+    print ('R - Waterfall')
+    print ('T - Horizontal lines, length is similarity strength')
+    print ('Y - Circles')
+    print ('U - Outline')
+    print ('I - Horizontal lines, fading, chosen by strength')
+    print ('O - Simplify colours')
+    print ('P - Pixelise, with tile effect')
+    print ('L - P then O combo. Works well.')
+    print ('Space - Reset')
+
+print_controls()
 
 
 while True:
