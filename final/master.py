@@ -24,6 +24,9 @@ window.blit(picture, (0, 0))
 switch_comparison_direction = 1
 run_once = True
 
+TILE_SIZE = 20
+TILE_SPACING = 5
+
 
 # Define functions
 
@@ -252,13 +255,6 @@ def streaker(run_once, switch_comparison_direction, px_array):
                         # Completes the effect of tail fading to black, by setting all else to black,
                         px_array[x, y] = BLACK
 
-        # Draw new picture from altered px_array
-        pict = px_array.make_surface()
-        del px_array
-
-        window.blit(pict, (0, 0))
-        pygame.display.update()
-
         print ('Done, press space then i again if it is mostly black.')
         switch_comparison_direction *= -1
 
@@ -290,11 +286,6 @@ def simplify_colour():
 
 def pixelise():
 
-    TILE_SIZE = 20
-    TILE_SPACING = 5
-    global px_array
-    pixel_array = pygame.PixelArray(window)
-
     for current_start_x in xrange(0, WIDTH, TILE_SIZE):
         for current_start_y in xrange(0, HEIGHT, TILE_SIZE):
 
@@ -319,14 +310,8 @@ def pixelise():
             new_green = green_total / colour_count
             new_blue = blue_total / colour_count
 
-            pixel_array[current_start_x: current_start_x + TILE_SIZE - TILE_SPACING,
+            px_array[current_start_x: current_start_x + TILE_SIZE - TILE_SPACING,
                         current_start_y: current_start_y + TILE_SIZE - TILE_SPACING] = (new_red, new_green, new_blue)
-
-    pict = px_array.make_surface()
-    del px_array
-
-    window.blit(pict, (0, 0))
-    pygame.display.update()
 
 
 # creates dictionary for controls.
@@ -339,18 +324,18 @@ controls = {'q': circle,
             'u': horizontal_lines,
             'i': streaker_1,
             'o': simplify_colour,
-            'p': pixelise,}
+            'p': pixelise}
 
 
 def print_controls():
     print ('Controls:')
-    print ('Q - Invert colours')
+    print ('Q - Circles')
     print ('W - Blur')
     print ('E - Night vision')
-    print ('R - Waterfall')
-    print ('T - Horizontal lines, length is similarity strength')
-    print ('Y - Circles')
-    print ('U - Outline')
+    print ('R - Invert colours')
+    print ('T - Outline')
+    print ('Y - Waterfall')
+    print ('U - Horizontal lines, length is similarity strength')
     print ('I - Horizontal lines, fading, chosen by strength')
     print ('O - Simplify colours')
     print ('P - Pixelise, with tile effect')
