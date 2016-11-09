@@ -183,8 +183,8 @@ def streaker(run_once, switch_comparison_direction):
 
                 # Calculate a strength comparison value for the pixel
                 sum_of_squares = math.sqrt(math.pow(current_red, 2) +
-                                       math.pow(current_green, 2) +
-                                       math.pow(current_blue, 2))
+                                           math.pow(current_green, 2) +
+                                           math.pow(current_blue, 2))
 
                 # Ignore pure white and black outliers
                 if 10 < sum_of_squares < 440:
@@ -234,9 +234,9 @@ def streaker(run_once, switch_comparison_direction):
                     if sum_of_squares > sum_of_squares_average:
 
                         # Create a tail fading to black from that pixel
-                        for i in range (0, tail_length):
+                        for i in xrange(0, tail_length):
                             if x - i > 0:
-                                new_red =  current_red - (current_red * i / tail_length)
+                                new_red = current_red - (current_red * i / tail_length)
                                 new_green = current_green - (current_green * i / tail_length)
                                 new_blue = current_blue - (current_blue * i / tail_length)
 
@@ -291,16 +291,16 @@ def pixelise():
     global px_array
     px_array = pygame.PixelArray(window)
 
-    for currentStartX in range(0, WIDTH, tile_size):
-        for currentStartY in range(0, HEIGHT, tile_size):
+    for current_start_x in range(0, WIDTH, tile_size):
+        for current_start_y in range(0, HEIGHT, tile_size):
 
             red_total = 0
             green_total = 0
             blue_total = 0
             colour_count = 0
 
-            for x in range(currentStartX, currentStartX + tile_size - 1):
-                for y in range(currentStartY, currentStartY + tile_size - 1):
+            for x in range(current_start_x, current_start_x + tile_size - 1):
+                for y in range(current_start_y, current_start_y + tile_size - 1):
                     current_red = window.get_at((x, y)).r
                     current_green = window.get_at((x, y)).g
                     current_blue = window.get_at((x, y)).b
@@ -315,8 +315,8 @@ def pixelise():
             new_green = green_total / colour_count
             new_blue = blue_total / colour_count
 
-            px_array[currentStartX: currentStartX + tile_size - tile_spacing,
-                currentStartY: currentStartY + tile_size - tile_spacing] = (new_red, new_green, new_blue)
+            pixel_array[current_start_x: current_start_x + tile_size - tile_spacing,
+                current_start_y: current_start_y + tile_size - tile_spacing] = (new_red, new_green, new_blue)
 
     pict = px_array.make_surface()
     del px_array
