@@ -250,7 +250,6 @@ def streaker(run_once, switch_comparison_direction):
         # Draw new picture from altered px_array
         pict = px_array.make_surface()
         del px_array
-        del px_array
 
         window.blit(pict, (0, 0))
         pygame.display.update()
@@ -288,8 +287,6 @@ def pixelise():
 
     tile_size = 20
     tile_spacing = 5
-    global px_array
-    px_array = pygame.PixelArray(window)
 
     for current_start_x in range(0, WIDTH, tile_size):
         for current_start_y in range(0, HEIGHT, tile_size):
@@ -319,7 +316,6 @@ def pixelise():
                 current_start_y: current_start_y + tile_size - tile_spacing] = (new_red, new_green, new_blue)
 
     pict = px_array.make_surface()
-    del px_array
     del px_array
 
     window.blit(pict, (0, 0))
@@ -356,7 +352,6 @@ def print_controls():
     print ('I - Horizontal lines, fading, chosen by strength')
     print ('O - Simplify colours')
     print ('P - Pixelise, with tile effect')
-    print ('L - P then O combo. Works well.')
     print ('Space - Reset')
 
 print_controls()
