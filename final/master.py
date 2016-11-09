@@ -264,7 +264,7 @@ def streaker(run_once, switch_comparison_direction, px_array):
 
 
 def simplify_colour():
-    px_array = pygame.PixelArray(window)
+    """rounds the colour values to preset increments"""
 
     # The step in the colour range which each colour value will be rounded to
     simplify_strength = 255 / 3
@@ -285,7 +285,8 @@ def simplify_colour():
 
 
 def pixelise():
-
+    """swaps ranges of pixels for the average colour of that range, allows smaller tiles than the range to
+    give an effect where the tiles are spaced apart"""
     for current_start_x in xrange(0, WIDTH, TILE_SIZE):
         for current_start_y in xrange(0, HEIGHT, TILE_SIZE):
 
@@ -328,6 +329,7 @@ controls = {'q': circle,
 
 
 def print_controls():
+    """Prints controls"""
     print ('Controls:')
     print ('Q - Circles')
     print ('W - Blur')
