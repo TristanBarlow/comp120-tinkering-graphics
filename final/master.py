@@ -332,4 +332,5 @@ while True:
         del px_array
         window.blit(picture, ORIGIN)
         print print_controls()
+
     pygame.display.update()
