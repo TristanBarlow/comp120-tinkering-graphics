@@ -14,14 +14,13 @@ TILE_SIZE = 20
 TILE_SPACING = 5
 ORIGIN = (0,0)
 
-
 WIDTH = 900
 HEIGHT = 600
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Insert picture name to load below
-picture = pygame.image.load('pic7.jpg')
+picture = pygame.image.load('pic10.jpg')
 picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
 window.blit(picture, ORIGIN)
@@ -29,8 +28,9 @@ switch_comparison_direction = 1
 
 # Define functions
 
+
 def clamp(value):
-    """Clams a colour value to within 0 and 255"""
+    """Clamps a colour value to within 0 and 255"""
     if value > 255:
         clamped_value = 255
     elif value < 0:
@@ -73,7 +73,7 @@ def outline():
             colour_1 = window.get_at((x, y))
             colour_2 = window.get_at((x + 1, y))
             likeness = distance(colour_1, colour_2)
-            if likeness > 150:
+            if likeness > 40:                                 # Change number to change when it outlines
                 px_array[x, y] = BLACK
             else:
                 px_array[x, y] = WHITE
@@ -151,7 +151,7 @@ def streaker(switch_comparison_direction, px_array):
     """Runs once, does two passes, firstly determines an average value of the numerical distance
     of the colour values, secondly compares every value to the average and draws a tail fading to
     black. Abstract effect based off the colour strengths essentially"""
-    tail_length = 200
+    TAIL_LENGTH = 200
     sum_of_squares_total = 0
     sum_of_squares_count = 0
     ignore_next_batch = False
@@ -174,7 +174,7 @@ def streaker(switch_comparison_direction, px_array):
                                        math.pow(current_blue, 2))
 
             # Ignore pure white and black outliers
-            if 10 < sum_of_squares < 440:
+            if 10 < sum_of_squares < 430:       # these numbers represent the outlying values of white around the value of 0 and black around the value 441
 
                 # Keep a running total and count number to calculate average, ignoring outliers
                 sum_of_squares_total += sum_of_squares
@@ -199,7 +199,7 @@ def streaker(switch_comparison_direction, px_array):
             if ignore_next_batch:
                 ignore_next_batch_count += 1
                 px_array[x, y] = BLACK
-                if ignore_next_batch_count == tail_length:
+                if ignore_next_batch_count == TAIL_LENGTH:
                     ignore_next_batch = False
                     ignore_next_batch_count = 0
             else:
@@ -221,11 +221,11 @@ def streaker(switch_comparison_direction, px_array):
                 if sum_of_squares > sum_of_squares_average:
 
                     # Create a tail fading to black from that pixel
-                    for i in xrange(0, tail_length):
+                    for i in xrange(0, TAIL_LENGTH):
                         if x - i > 0:
-                            new_red = current_red - (current_red * i / tail_length)
-                            new_green = current_green - (current_green * i / tail_length)
-                            new_blue = current_blue - (current_blue * i / tail_length)
+                            new_red = current_red - (current_red * i / TAIL_LENGTH)
+                            new_green = current_green - (current_green * i / TAIL_LENGTH)
+                            new_blue = current_blue - (current_blue * i / TAIL_LENGTH)
 
                             px_array[x - i, y] = (new_red, new_green, new_blue)
                             ignore_next_batch = True
@@ -235,6 +235,7 @@ def streaker(switch_comparison_direction, px_array):
                     px_array[x, y] = BLACK
 
     print ('Done, press space then i again if it is mostly black.')
+    # reverses the comparison direction for a better result on some images
     switch_comparison_direction *= -1
 
 
@@ -242,7 +243,7 @@ def simplify_colour():
     """rounds the colour values to preset increments"""
 
     # The step in the colour range which each colour value will be rounded to
-    simplify_strength = 255 / 3
+    SIMPLIFY_STRENGTH = 255 / 3
 
     for x in xrange(0, WIDTH - 1):
         for y in xrange(0, HEIGHT - 1):
@@ -252,9 +253,9 @@ def simplify_colour():
 
             # Essentially this divides by a number, truncates the decimal portion then multiplies it back to scale
             # for instance were the strength = 100, a value of 234 would go to 2.34 to 2 then return 200
-            new_red = clamp(simplify_strength * int(red / simplify_strength) + (simplify_strength / 2))
-            new_green = clamp(simplify_strength * int(green / simplify_strength) + (simplify_strength / 2))
-            new_blue = clamp(simplify_strength * int(blue / simplify_strength) + (simplify_strength / 2))
+            new_red = clamp(SIMPLIFY_STRENGTH * int(red / SIMPLIFY_STRENGTH) + (SIMPLIFY_STRENGTH / 2))
+            new_green = clamp(SIMPLIFY_STRENGTH * int(green / SIMPLIFY_STRENGTH) + (SIMPLIFY_STRENGTH / 2))
+            new_blue = clamp(SIMPLIFY_STRENGTH * int(blue / SIMPLIFY_STRENGTH) + (SIMPLIFY_STRENGTH / 2))
 
             px_array[x, y] = (new_red, new_green, new_blue)
 
@@ -310,6 +311,8 @@ def print_controls():
     print "space : reset"
 
 print_controls()
+
+
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
@@ -317,12 +320,13 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
     # Handles controls by referring to a dictionary.
     if event.type == pygame.KEYDOWN:
         which_key = pygame.key.name(event.key)              # gives back the key pressed as a string
         if which_key in controls:
-                command = controls[which_key][0]               # assigns function pointer dependent on key to command
-                command()                                 # actually executes the function refered to in the dict
+                command = controls[which_key][0]            # assigns function pointer dependent on key to command
+                command()                                   # actually executes the function in the dict
         elif which_key != 'space':                          # an exception so space isn't printed as not in use
             print ""
             print('key ' + which_key + ' not in use')
@@ -331,6 +335,5 @@ while True:
     if keys[pygame.K_SPACE]:
         del px_array
         window.blit(picture, ORIGIN)
-        print print_controls()
-
+        print_controls()
     pygame.display.update()
