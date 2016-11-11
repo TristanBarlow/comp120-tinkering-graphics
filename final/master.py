@@ -10,6 +10,10 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+TILE_SIZE = 20
+TILE_SPACING = 5
+ORIGIN = (0,0)
+
 
 WIDTH = 900
 HEIGHT = 600
@@ -20,17 +24,13 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 picture = pygame.image.load('pic7.jpg')
 picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
-window.blit(picture, (0, 0))
+window.blit(picture, ORIGIN)
 switch_comparison_direction = 1
-
-TILE_SIZE = 20
-TILE_SPACING = 5
-
 
 # Define functions
 
-# Clamps a colour value to within 0 and 255
 def clamp(value):
+    """Clams a colour value to within 0 and 255"""
     if value > 255:
         clamped_value = 255
     elif value < 0:
@@ -42,12 +42,12 @@ def clamp(value):
 
 def cap_colours(color_change):
     """Changes colours if within a range"""
-    if 100 < color_change < 255:
-        color_change = 215
+    if 100 < color_change < 255:          # caps colours within range, the 100, 255 combination gets a good result
+        color_change = 215                # value it changes the rgb too
     return color_change
 
 
-def distance(r_1, g_1, b_1, r_2, g_2, b_2):
+def distance((r_1, g_1, b_1, a_1), (r_2, g_2, b_2, a_2)):
     """uses pythagoras theorem to calculate numerical distance between the colors"""
     difference_red = math.pow(r_1 - r_2, 2)
     difference_green = math.pow(g_1 - g_2, 2)
@@ -62,23 +62,17 @@ def circle():
         a = (HEIGHT/2)           # Uses The height to determine maximum radius
         radius = (a-y)
         x = WIDTH / 2
-        red = window.get_at((x, y)).r
-        green = window.get_at((x, y)).g
-        blue = window.get_at((x, y)).b
-        pygame.draw.circle(window, (red, green, blue), (WIDTH / 2, HEIGHT / 2), radius, 1)
+        colour_1 = window.get_at((x, y))
+        pygame.draw.circle(window, colour_1, (WIDTH / 2, HEIGHT / 2), radius, 1)
 
 
 def outline():
     """calculates and draws outline"""
     for x in xrange(1, WIDTH - 1):
         for y in xrange(1, HEIGHT - 1):
-            red = window.get_at((x, y)).r
-            green = window.get_at((x, y)).g
-            blue = window.get_at((x, y)).b
-            red_1 = window.get_at((x + 1, y)).r
-            green_1 = window.get_at((x + 1, y)).g
-            blue_1 = window.get_at((x + 1, y)).b
-            likeness = distance(red, red_1, green, green_1, blue, blue_1)
+            colour_1 = window.get_at((x, y))
+            colour_2 = window.get_at((x + 1, y))
+            likeness = distance(colour_1, colour_2)
             if likeness > 150:
                 px_array[x, y] = BLACK
             else:
@@ -89,28 +83,20 @@ def water_fall():
     """draws vertical rectangles, the length of the rectangles and colour depend on their vertical neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
-            red = window.get_at((x, y)).r
-            green = window.get_at((x, y)).g
-            blue = window.get_at((x, y)).b
-            red_1 = window.get_at((x, y + 1)).r
-            green_1 = window.get_at((x, y + 1)).g
-            blue_1 = window.get_at((x, y + 1)).b
-            likeness = distance(red, green, blue, red_1, green_1, blue_1,)
-            pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, 1, likeness / 10), )
+            colour_1 = window.get_at((x, y))
+            colour_2 = window.get_at((x, y + 1))
+            likeness = distance(colour_1, colour_2)
+            pygame.draw.rect(window, colour_2, (x + 1, y, 1, likeness / 10), )
 
 
 def horizontal_lines():
     """draws horizontal lines, the size and colour of the lines depend on their horizontal neighbour."""
     for y in xrange(1, HEIGHT - 1):
         for x in xrange(1, WIDTH - 1):
-            red = window.get_at((x, y)).r
-            green = window.get_at((x, y)).g
-            blue = window.get_at((x, y)).b
-            red_1 = window.get_at((x + 1, y)).r
-            green_1 = window.get_at((x + 1, y)).g
-            blue_1 = window.get_at((x + 1, y)).b
-            likeness = distance(red, green, blue, red_1, green_1, blue_1,)
-            pygame.draw.rect(window, (red_1, green_1, blue_1), (x + 1, y, likeness / 3, 1), 1)
+            colour_1 = window.get_at((x, y))
+            colour_2 = window.get_at((x + 1, y))
+            likeness = distance(colour_1, colour_2)
+            pygame.draw.rect(window, colour_2, (x + 1, y, likeness / 3, 1), 1)
 
 
 def night_vision():
@@ -139,17 +125,12 @@ def color_invert():
             px_array[x, y] = (red_final, green_final, blue_final)
 
 
-def blur_picture_1():
-    """passes an argument into function not possible from dictionary delegate"""
-    blur_picture(1)
-
-
 def streaker_1():
     """passes an argument into function not possible from dictionary delegate"""
     streaker(switch_comparison_direction, px_array)
 
 
-def blur_picture(a):
+def blur_picture(a=1):
     """blurs picture along different axis on subsequent presses"""
     a *= -a                                             # used so that each time blur is called it will blur in the opposite direction
     for y in xrange(1, HEIGHT - 1):
@@ -310,36 +291,25 @@ def pixelise():
 
 
 # creates dictionary for controls.
-controls = {'q': circle,
-            'w': blur_picture_1,
-            'e': night_vision,
-            'r': color_invert,
-            't': outline,
-            'y': water_fall,
-            'u': horizontal_lines,
-            'i': streaker_1,
-            'o': simplify_colour,
-            'p': pixelise}
+controls = {'q': (circle, "circle"),
+            'w': (blur_picture, "blur picture"),
+            'e': (night_vision,"night vision"),
+            'r': (color_invert, "colour invert"),
+            't': (outline, "outline"),
+            'y': (water_fall, "waterfall"),
+            'u': (horizontal_lines, "horizontal lines"),
+            'i': (streaker_1, "streaker"),
+            'o': (simplify_colour, "simplify colour"),
+            'p': (pixelise, "pixelise")}
 
 
 def print_controls():
-    """Prints controls"""
-    print ('Controls:')
-    print ('Q - Circles')
-    print ('W - Blur')
-    print ('E - Night vision')
-    print ('R - Invert colours')
-    print ('T - Outline')
-    print ('Y - Waterfall')
-    print ('U - Horizontal lines, length is similarity strength')
-    print ('I - Horizontal lines, fading, chosen by strength')
-    print ('O - Simplify colours')
-    print ('P - Pixelise, with tile effect')
-    print ('Space - Reset')
+    """prints controls directly from dictionary tuple and associated key"""
+    for letters in controls:
+        print letters + " : " + controls[letters][1]
+    print "space : reset"
 
 print_controls()
-
-
 while True:
     keys = pygame.key.get_pressed()
     px_array = pygame.PixelArray(window)
@@ -351,17 +321,15 @@ while True:
     if event.type == pygame.KEYDOWN:
         which_key = pygame.key.name(event.key)              # gives back the key pressed as a string
         if which_key in controls:
-                command = controls[which_key]               # assigns function pointer dependent on key to command
-                command()                                   # actually executes the function refered to in the dict
+                command = controls[which_key][0]               # assigns function pointer dependent on key to command
+                command()                                 # actually executes the function refered to in the dict
         elif which_key != 'space':                          # an exception so space isn't printed as not in use
             print ""
             print('key ' + which_key + ' not in use')
-            print ""
-            print_controls()
 
     # Blits original picture
     if keys[pygame.K_SPACE]:
         del px_array
-        window.blit(picture, (0, 0))
-
+        window.blit(picture, ORIGIN)
+        print print_controls()
     pygame.display.update()
