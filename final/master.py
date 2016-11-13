@@ -20,7 +20,7 @@ HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Insert picture name to load below
-picture = pygame.image.load('pic7.jpg')
+picture = pygame.image.load('pic1.jpg')
 picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
 window.blit(picture, ORIGIN)
