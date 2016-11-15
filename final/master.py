@@ -20,7 +20,11 @@ HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Insert picture name to load below
+<<<<<<< .mine
 picture = pygame.image.load('pic1.jpg')
+=======
+picture = pygame.image.load('pic10.jpg')
+>>>>>>> .theirs
 picture = pygame.transform.scale(picture, (WIDTH, HEIGHT))
 
 window.blit(picture, ORIGIN)
@@ -73,7 +77,7 @@ def outline():
             colour_1 = window.get_at((x, y))
             colour_2 = window.get_at((x + 1, y))
             likeness = distance(colour_1, colour_2)
-            if likeness > 150:
+            if likeness > 40:                                 # Change number to change when it outlines
                 px_array[x, y] = BLACK
             else:
                 px_array[x, y] = WHITE
@@ -326,7 +330,7 @@ while True:
         which_key = pygame.key.name(event.key)              # gives back the key pressed as a string
         if which_key in controls:
                 command = controls[which_key][0]            # assigns function pointer dependent on key to command
-                command()                                   # actually executes the function refered to in the dict
+                command()                                   # actually executes the function in the dict
         elif which_key != 'space':                          # an exception so space isn't printed as not in use
             print ""
             print('key ' + which_key + ' not in use')
